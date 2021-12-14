@@ -1,2 +1,2 @@
-# projeto_am_ufabc
-Sistema de Recomendação de Músicas
+# Sistema de Recomendação de Músicas
+## Projeto conduzido para a disciplina de Aprendizado de Máquina na UFABC
