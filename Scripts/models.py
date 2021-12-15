@@ -11,6 +11,11 @@ from sklearn.linear_model import LinearRegression
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.model_selection import train_test_split
 import sklearn.metrics as metrics
+from sklearn.pipeline import make_pipeline
+from sklearn.ensemble import  RandomForestClassifier, VotingClassifier
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.svm import SVC
+from sklearn.preprocessing import StandardScaler
 
 from skorch import NeuralNet
 from skorch.dataset import CVSplit
@@ -282,8 +287,16 @@ def train_evaluation_system(manager: DataManager, USER: str) -> Tuple[DecisionTr
         None.
     """
     X_train, X_test, y_train, y_test = manager.get_training_data(USER, test_size = 0.2, oversampling = 'SMOTENC')
-    classifier = DecisionTreeClassifier()
-    classifier.fit(X_train, y_train)
+
+    pipelineSVC = make_pipeline(StandardScaler(), SVC(kernel='linear', C=0.1,probability=True) )
+    pipelineKNN = make_pipeline(StandardScaler(), KNeighborsClassifier(n_neighbors=10))
+    pipelineRFC = make_pipeline(StandardScaler(), RandomForestClassifier(criterion='gini', random_state=1, max_depth=30,max_features=8))
+
+    classifier = VotingClassifier(estimators=[('forest', pipelineRFC), ('knn', pipelineKNN), ('svc', pipelineSVC)], voting='hard')
+    # classifier = DecisionTreeClassifier()
+    classifier = pipelineRFC
+    # classifier = DecisionTreeClassifier(criterion='entropy', max_depth=10)
+    classifier.fit(X_train,y_train)
     print(f"Classifier Model: {classifier}")
     print(f"Accuracy Score: {metrics.accuracy_score(classifier.predict(X_test), y_test)}")
     print()
@@ -316,7 +329,7 @@ def train_generative_system(manager: DataManager, USER: str, verbose: bool = Tru
         criterion = VAELoss,
         optimizer = torch.optim.Adam,
         lr = 0.0001,
-        max_epochs = 200,
+        max_epochs = 500,
         batch_size = 100,
         iterator_train__shuffle = True,
         train_split = CVSplit(0.3),

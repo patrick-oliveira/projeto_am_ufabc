@@ -13,11 +13,24 @@ Na pasta _backup_ estão disponíveis outros notebooks utilizados para o estudo 
 
 ### Dependências
 
-__Para fazer: criar um arquivo .yml ou equivalente para instalação automática das dependências.__
-
 Fora os módulos tradicionais para Aprendizado de Máquina disponíveis pelo pacote Conda, o sistema generativo foi implementado utilizando os pacotes PyTorch e Skorch. A execução do código foi ajustada para funcionar com ou sem a disponibilidade de uma GPU com CUDA.
+
+Para utilizar os códigos apresentados no repositório, foram disponibilizados arquivos de base para gerar o ambiente virtual conda. As etapas a seguir descrevem os procedimentos básicos para a configuração do ambiente.
+
+#### Instruções para setup do ambiente:
+
+1- Na pasta **dependencias**, rodar os seguintes comandos:
+
+    conda deactivate
+    conda env create -f environment.yml
+
+A instalação de todo o ambiente pode demorar bastante, a depender a disponibilidade de rede.
+
+Para ativar o ambiente, utilizar: 
+
+    conda activate ML2021.3
 
 
 ### Diagrama Esquemático do Sistema de Recomendação
 
-<img src="Sistema.png" width="800" height = "1400" title="diagrama_sistema">
+<img src="docs/Sistema.png" width="800" height = "1400" title="diagrama_sistema">
